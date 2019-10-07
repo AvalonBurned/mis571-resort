@@ -1,0 +1,73 @@
+.echo ON
+
+.mode list
+.separator "  |  "
+
+.output resort.db
+
+PRAGMA foreign_keys = ON;
+
+
+CREATE TABLE Customer(
+custID   INTEGER CONSTRAINT Customer_custId_pk PRIMARY KEY,
+custFName VARCHAR(30),
+custLName VARCHAR(30),
+custInitial VARCHAR(30),
+custPhone VARCHAR(10),
+custUsername VARCHAR(10),
+custPassword VARCHAR(12),
+custPay VARCHAR(10));
+
+CREATE TABLE RoomType(
+   typeRoomName		VARCHAR(12)		CONSTRAINT RoomType_name_pk PRIMARY KEY,
+   typeDescription	VARCHAR(25)	NOT NULL,
+typePrice	DECIMAL(6,2));
+
+CREATE TABLE Booking(
+bookID INTEGER CONSTRAINT booking_bookid_pk PRIMARY KEY,
+bookCustID INTEGER CONSTRAINT Booking_custId_fk REFERENCES Customer(custID),
+bookSize INTEGER,
+bookCheckIn DATE,
+bookCheckOut DATE,
+bookPrice DECIMAL(5,2));
+
+
+CREATE TABLE ResortRoom(
+roomNum INTEGER CONSTRAINT ResortRoom_roomNum_pk PRIMARY KEY,
+roomType VARCHAR(12) CONSTRAINT ResortRoom_typeRoomName_fk REFERENCES RoomType(typeRoomName),
+roomBookID INTGER CONSTRAINT ResortRoom_bookId_fk REFERENCES Booking(bookId));
+
+
+CREATE TABLE Amenities(
+amID INTEGER CONSTRAINT Amenities_amid_pk PRIMARY KEY,
+amType VARCHAR(10));
+
+CREATE TABLE Spa(
+spaID INTEGER CONSTRAINT spa_spaid_pk PRIMARY KEY,
+spaPrice DECIMAL,
+spaAmID INTEGER CONSTRAINT Spa_amId_fk REFERENCES Amenities(amID),
+spaDateTime DATE);
+
+CREATE TABLE Restaurant(
+resTableID INTEGER CONSTRAINT restaurant_restabid_pk PRIMARY KEY,
+resFood VARCHAR(10),
+resAmID INTEGER CONSTRAINT Spa_amId_fk REFERENCES Amenities(amID),
+resDateTime DATE);
+
+CREATE TABLE Excursions(
+excID INTEGER CONSTRAINT excursions_excid_pk PRIMARY KEY,
+excType VARCHAR(15),
+excStarLocation VARCHAR(30),
+excDestination VARCHAR(30),
+excDateTime DATE,
+excAmID CONSTRAINT exc_amId_fk REFERENCES Amenities(amID));
+
+CREATE TABLE Tickets(
+ticketID INTEGER CONSTRAINT ticket_id_pk PRIMARY KEY, 
+ticketRoomnum INTEGER, 
+ticketIssue VARCHAR(40),
+ticketcustID INTEGER CONSTRAINT tickets_custId_fk REFERENCES Customer(custID));
+
+.output stdout
+.echo OFF
+
