@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.tutorial5_keerthan.constant.DBConstant;
+import com.example.resortmanagement.constant.DBConstant;
 
 import java.io.File;
 import java.io.FileNotFoundException;
