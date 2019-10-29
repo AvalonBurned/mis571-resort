@@ -7,7 +7,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.example.tutorial5_keerthan.util.DBOperator;
+import com.example.resortmanagement.util.DBOperator;
 
 
 /**
