@@ -14,13 +14,13 @@ DBConstant
     static
     String
             DATABASE_PATH
-            = "/data/data/com.example.tutorial5_keerthan/databases";
+            = "/data/data/com.example.resortmanagement/databases";
     //database file name
     public
     static
     String
             DATABASE_FILE
-            = "lib.db";
+            = "resort_manager.db";
     //database version
     public
     static
