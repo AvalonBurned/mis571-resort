@@ -9,7 +9,7 @@ PRAGMA foreign_keys = ON;
 
 
 CREATE TABLE Customer(
-custID   INTEGER NOT NULL CONSTRAINT Customer_custId_pk PRIMARY KEY,
+custID   VARCHAR(10) NOT NULL CONSTRAINT Customer_custId_pk PRIMARY KEY,
 custFName VARCHAR(30) NOT NULL,
 custLName VARCHAR(30)  NOT NULL,
 custInitial VARCHAR(30),
@@ -19,41 +19,42 @@ custPassword VARCHAR(18) NOT NULL,
 custPay VARCHAR(10) NOT NULL);
 
 CREATE TABLE Booking(
-bookID INTEGER CONSTRAINT booking_bookID_pk PRIMARY KEY,
-bookCustID INTEGER CONSTRAINT Booking_bookCustID_fk REFERENCES Customer(custID),
+bookID VARCHAR(10) CONSTRAINT booking_bookID_pk PRIMARY KEY,
+bookCustID VARCHAR(10) CONSTRAINT Booking_bookCustID_fk REFERENCES Customer(custID),
 bookSize INTEGER NOT NULL,
 bookCheckIn DATE NOT NULL,
 bookCheckOut DATE NOT NULL,
 bookPrice DECIMAL(5,2) NOT NULL);
 
 CREATE TABLE RoomType(
-   typeRoomName		VARCHAR(12) CONSTRAINT RoomType_typeRoomName_pk PRIMARY KEY,
-   typeDescription	VARCHAR(25)	NOT NULL,
-   typePrice	DECIMAL(6,2) NOT NULL);
+typeRoomName	VARCHAR(12) CONSTRAINT RoomType_typeRoomName_pk PRIMARY KEY,
+typeDescription	VARCHAR(25)	NOT NULL,
+typePrice	DECIMAL(6,2) NOT NULL);
 
 CREATE TABLE ResortRoom(
-roomNum INTEGER CONSTRAINT ResortRoom_roomNum_pk PRIMARY KEY,
+roomNum VARCHAR(10) CONSTRAINT ResortRoom_roomNum_pk PRIMARY KEY,
 roomType VARCHAR(12) CONSTRAINT ResortRoom_roomType_fk REFERENCES RoomType(typeRoomName),
-roomBookID INTGER CONSTRAINT ResortRoom_roomBookID_fk REFERENCES Booking(bookID));
+roomBookID VARCHAR(10) CONSTRAINT ResortRoom_roomBookID_fk REFERENCES Booking(bookID));
+
 
 CREATE TABLE Amenities(
-amID INTEGER CONSTRAINT Amenities_amID_pk PRIMARY KEY,
+amID VARCHAR(10) CONSTRAINT Amenities_amID_pk PRIMARY KEY,
 amType VARCHAR(10) NOT NULL);
 
 CREATE TABLE Spa(
-spaID INTEGER CONSTRAINT spa_spaid_pk PRIMARY KEY,
+spaID VARCHAR(10) CONSTRAINT spa_spaid_pk PRIMARY KEY,
 spaPrice DECIMAL(6,2) NOT NULL,
-spaAmID INTEGER CONSTRAINT Spa_amId_fk REFERENCES Amenities(amID),
+spaAmID VARCHAR(10) CONSTRAINT Spa_amId_fk REFERENCES Amenities(amID),
 spaDateTime DATE NOT NULL);
 
 CREATE TABLE Restaurant(
-resTableID INTEGER CONSTRAINT restaurant_restabid_pk PRIMARY KEY,
+resTableID VARCHAR(10) CONSTRAINT restaurant_restabid_pk PRIMARY KEY,
 resFood VARCHAR(10) NOT NULL,
-resAmID INTEGER CONSTRAINT Spa_amId_fk REFERENCES Amenities(amID),
+resAmID VARCHAR(10) CONSTRAINT Spa_amId_fk REFERENCES Amenities(amID),
 resDateTime DATE NOT NULL);
 
 CREATE TABLE Excursions(
-excID INTEGER CONSTRAINT excursions_excid_pk PRIMARY KEY,
+excID VARCHAR(10) CONSTRAINT excursions_excid_pk PRIMARY KEY,
 excType VARCHAR(15) NOT NULL,
 excStarLocation VARCHAR(30) NOT NULL,
 excDestination VARCHAR(30) NOT NULL,
@@ -61,29 +62,74 @@ excDateTime DATE NOT NULL,
 excAmID CONSTRAINT exc_amId_fk REFERENCES Amenities(amID));
 
 CREATE TABLE Tickets(
-ticketID INTEGER CONSTRAINT ticket_id_pk PRIMARY KEY, 
-ticketRoomnum INTEGER NOT NULL, 
+ticketID VARCHAR(10) CONSTRAINT ticket_id_pk PRIMARY KEY, 
+ticketRoomnum VARCHAR(10) NOT NULL, 
 ticketIssue VARCHAR(40) NOT NULL,
-ticketcustID INTEGER CONSTRAINT tickets_custId_fk REFERENCES Customer(custID));
+ticketcustID VARCHAR(10) CONSTRAINT tickets_custId_fk REFERENCES Customer(custID));
 
 CREATE TABLE Orders(
-orderID INTEGER CONSTRAINT orders_id_pk PRIMARY KEY, 
-orderCustID INTEGER CONSTRAINT orders_custId_fk REFERENCES Customer(custID),
-orderAmID INTEGER CONSTRAINT orders_AmId_fk REFERENCES Amenities(amID),
+orderID VARCHAR(10) CONSTRAINT orders_id_pk PRIMARY KEY, 
+orderCustID VARCHAR(10) CONSTRAINT orders_custId_fk REFERENCES Customer(custID),
+orderAmID VARCHAR(10) CONSTRAINT orders_AmId_fk REFERENCES Amenities(amID),
 orderValue DECIMAL(7,2));
 
 CREATE TABLE RoomBooking(
-bookID INTEGER CONSTRAINT room_booking_bookId_fk REFERENCES Booking(bookID),
-roomNum INTEGER CONSTRAINT room_booking_roomNum_fk REFERENCES ResortRoom(roomNum),
-CONSTRAINT roomBooking_id_pk PRIMARY KEY(bookID,roomNum));
+bookID VARCHAR(10) CONSTRAINT room_booking_bookId_fk REFERENCES Booking(bookID),
+roomNum VARCHAR(10) CONSTRAINT room_booking_roomNum_fk REFERENCES ResortRoom(roomNum),
+CONSTRAINT roomBooking_id_pk PRIMARY KEY(bookID,roomNum)
+);
 
 CREATE TABLE AmenityBooking(
-orderID INTEGER CONSTRAINT order_custId_fk REFERENCES Orders(orderID),
-amID INTEGER CONSTRAINT amenity_booking_AmId_fk REFERENCES Amenities(amID),
-CONSTRAINT amenityBooking_id_pk PRIMARY KEY(orderID,amID));
+orderID VARCHAR(10) CONSTRAINT order_custId_fk REFERENCES Orders(orderID),
+amID VARCHAR(10) CONSTRAINT amenity_booking_AmId_fk REFERENCES Amenities(amID),
+CONSTRAINT amenityBooking_id_pk PRIMARY KEY(orderID,amID)
+);
 
+INSERT INTO Customer VALUES ('C1', 'Andy', 'David', 'K', '8915367188', 'user1', 'qweasd', 'credict card');
+INSERT INTO Customer VALUES ('C2', 'Austin', 'Ross', 'M', '1233753684', 'user2', 'sdhjhd', 'credict card');
+INSERT INTO Customer VALUES ('C3', 'Brian', 'Martin', 'P', '5082328798', 'user3', 'sjdxdfghjv', 'credict card');
+INSERT INTO Customer VALUES ('C4', 'Tyler', 'Garcia', 'A', '9864752346', 'user4', 'ethxhjj', 'credict card');
+INSERT INTO Customer VALUES ('C5', 'Madison', 'Young', 'A', '4546667821', 'user5', '123dyujgfshm', 'credict card');
+
+INSERT INTO Booking VALUES('B1', 'C1', '1', '09/01/2019', '09/10/2019', '1000');
+INSERT INTO Booking VALUES('B2', 'C2', '2', '09/02/2019', '09/10/2019', '1600');
+INSERT INTO Booking VALUES('B3', 'C3', '1', '09/05/2019', '09/10/2019', '500');
+
+INSERT INTO RoomType VALUES('T1', 'Single', '100');
+INSERT INTO RoomType VALUES('T2', 'Double', '200');
+INSERT INTO RoomType VALUES('T3', 'Twin', '200');
+INSERT INTO RoomType VALUES('T4', 'King', '300');
+INSERT INTO RoomType VALUES('T5', 'Queen', '400');
+
+INSERT INTO ResortRoom VALUES('R1', 'T1', 'B2');
+INSERT INTO ResortRoom VALUES('R2', 'T2', 'B1');
+INSERT INTO ResortRoom VALUES('R3', 'T4', 'B3');
+
+INSERT INTO Amenities VALUES('A1', 'Hot tub');
+INSERT INTO Amenities VALUES('A2', 'Sauna');
+INSERT INTO Amenities VALUES('A3', 'Fitness center');
+
+INSERT INTO Spa VALUES('S1', '50', 'A1', '09/01/2019');
+INSERT INTO Spa VALUES('S2', '100', 'A2', '09/01/2019');
+INSERT INTO Spa VALUES('S3', '100', 'A3', '09/01/2019');
+
+INSERT INTO Restaurant VALUES('t1', 'Chinese food', 'A1', '12:00');
+INSERT INTO Restaurant VALUES('t2', 'Chinese food', 'A2', '12:00');
+INSERT INTO Restaurant VALUES('t3', 'Chinese food', 'A3', '12:00');
+INSERT INTO Restaurant VALUES('t4', 'Western food', 'A1', '12:00');
+INSERT INTO Restaurant VALUES('t5', 'Western food', 'A2', '12:00');
+INSERT INTO Restaurant VALUES('t6', 'Western food', 'A2', '12:00');
+INSERT INTO Restaurant VALUES('t7', 'Fast food', 'A1', '12:00');
+INSERT INTO Restaurant VALUES('t8', 'Fast food', 'A2', '12:00');
+INSERT INTO Restaurant VALUES('t9', 'Fast food', 'A3', '12:00');
+
+INSERT INTO Excursions VALUES('E1', 'WALK', 'WPI', 'Clark', '12:00', 'A1');
+INSERT INTO Excursions VALUES('E2', 'Jogging', 'Central Park', 'Chinese restaurant', '15.00', 'A2');
+
+INSERT INTO Tickets VALUES('tic1', 'R1',  'for lunch', 'C1');
+INSERT INTO Tickets VALUES('tic2', 'R2',  'for lunch', 'C2');
+INSERT INTO Tickets VALUES('tic3', 'R3',  'for dinner', 'C3');
 
 
 .output stdout
 .echo OFF
-
